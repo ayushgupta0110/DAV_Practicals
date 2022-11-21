@@ -1,0 +1,578 @@
+Practical 1
+
+
+Given below is a dictionary having two keys ‘Boys’ and ‘Girls’ and having two lists of heights of five Boys and Five Girls respectively as values associated with these keys
+
+Original dictionary of lists:
+
+{'Boys': [72, 68, 70, 69, 74], 'Girls': [63, 65, 69, 62, 61]}
+
+From the given dictionary of lists create the following list of dictionaries:
+
+[{'Boys': 72, 'Girls': 63}, {'Boys': 68, 'Girls': 65}, {'Boys': 70, 'Girls': 69}, {'Boys': 69, 'Girls': 62}, {‘Boys’:74, ‘Girls’:61]
+
+def list_of_dict(heights):
+    keys=heights.keys()
+    # print(keys)
+    values = zip(*[heights[k] for k in keys])
+    # print(values)
+    result = [dict(zip(keys,v )) for v in values]
+    return result
+
+heights = {'Boys':[72,68,70,69,74], 'Girls':[63,65,69,62,61]}
+print("\n ORIGINAL DICTIONARY OF LISTS :" , heights)
+print("\n NOW LIST OF DICTIONARIES : \n",list_of_dict(heights))
+ ORIGINAL DICTIONARY OF LISTS : {'Boys': [72, 68, 70, 69, 74], 'Girls': [63, 65, 69, 62, 61]}
+
+ NOW LIST OF DICTIONARIES : 
+ [{'Boys': 72, 'Girls': 63}, {'Boys': 68, 'Girls': 65}, {'Boys': 70, 'Girls': 69}, {'Boys': 69, 'Girls': 62}, {'Boys': 74, 'Girls': 61}]
+ 
+
+
+**************************************
+
+
+
+2.  Practical 2
+
+
+Write programs in Python using NumPy library to do the following:
+
+a. Compute the mean, standard deviation, and variance of a two dimensional random integer array along the second axis.
+
+b. Get the indices of the sorted elements of a given array.
+
+a. B = [56, 48, 22, 41, 78, 91, 24, 46, 8, 33]
+
+c. Create a 2-dimensional array of size m x n integer elements, also print the shape, type and data type of the array and then reshape it into nx m array, n and m are user inputs given at the run time.
+
+d. Test whether the elements of a given array are zero, non-zero and NaN. Record the indices of these elements in three separate arrays.
+
+import numpy as np
+#part a
+arr = np.random.randint(1,50,(4,6))
+arr
+array([[17, 20, 31, 12, 16, 10],
+       [44, 22, 32, 42, 30,  6],
+       [49, 46, 33,  6,  3, 14],
+       [34, 39, 35, 17, 29, 20]])
+#along the second axis
+#Mean
+print('Mean of the array: ',arr.mean(axis=1))
+#standard deviation
+print('Standard Deviation of the array: ',arr.std(axis=1))
+#variance
+print('Variance of the array: ',arr.var(axis=1))
+Mean of the array:  [17.66666667 29.33333333 25.16666667 29.        ]
+Standard Deviation of the array:  [ 6.79869268 12.78888406 18.46994556  8.02080628]
+Variance of the array:  [ 46.22222222 163.55555556 341.13888889  64.33333333]
+#part b
+B = [56, 48, 22, 41, 78, 91, 24, 46, 8, 33]
+arr1 = np.array(B)
+#arr1
+print("Sorted array: ",np.sort(arr1))
+print("Indices of the sorted elements of a given array: ",np.argsort(arr1))
+Sorted array:  [ 8 22 24 33 41 46 48 56 78 91]
+Indices of the sorted elements of a given array:  [8 2 6 9 3 7 1 0 4 5]
+#part c
+m = int(input('Enter the number of rows(m): '))
+n = int(input('Enter the number of columns(n): '))
+arr2 = np.random.randint(1,100,(m,n))
+print(arr2)
+print('Shape: ',arr2.shape)
+print('Type: ',type(arr2))
+print('Data Type: ',arr2.dtype)
+arr2 = arr2.reshape(n,m)
+print('After reshaping: \n',arr2)
+print('New Shape: ',arr2.shape)
+[[ 6 77 89]
+ [55 43 24]]
+Shape:  (2, 3)
+Type:  
+Data Type:  int32
+After reshaping: 
+ [[ 6 77]
+ [89 55]
+ [43 24]]
+New Shape:  (3, 2)
+#part D
+x = np.array([1, 0, 3, 4])
+print("ORIGINAL ARRAY ::-> ",x)
+print("\nTest if none of the elements of the said array is zero ::-> ", np.all(x))
+
+res = np.where(x == 0)[0]
+print("The index of the  zero elements is :: ",res)
+
+
+x = np.array([1, 0, 0, 3, 2, 0])
+print("\n")
+print("\nORIGINAL ARRAY ::-> ",x)
+print("\nTest whether any of the elements of a given array is non-zero ::",np.any(x))
+res = np.where(x != 0)[0]
+print("The index of the non- zero elements is :: ",res)
+x = np.array([0, 0, 0, 0])
+
+
+a = np.array([1, 0, np.nan, 3, np.nan])
+print("\n")
+print("\nORIGINAL ARRAY ::-> ",a)
+print("\nTest element-wise for NaN :: ",np.isnan(a))
+
+res = np.where(np.isnan(a) == True)[0]
+print("The index of the  zero elements is :: ",res)
+ORIGINAL ARRAY ::->  [1 0 3 4]
+
+Test if none of the elements of the said array is zero ::->  False
+The index of the  zero elements is ::  [1]
+
+
+
+ORIGINAL ARRAY ::->  [1 0 0 3 2 0]
+
+Test whether any of the elements of a given array is non-zero :: True
+The index of the non- zero elements is ::  [0 3 4]
+
+
+
+ORIGINAL ARRAY ::->  [ 1.  0. nan  3. nan]
+
+Test element-wise for NaN ::  [False False  True False  True]
+The index of the  zero elements is ::  [2 4]
+
+***********************************************
+
+3. practical 3
+
+Create a dataframe having at least 3 columns and 50 rows to store numeric data generated using a random function. Replace 10% of the values by null values whose index positions are generated using random function. Do the following:
+
+a. Identify and count missing values in a dataframe.
+b. Drop the column having more than 5 null values.
+c. Identify the row label having maximum of the sum of all values in a row and drop that row.
+d. Sort the dataframe on the basis of the first column.
+e. Remove all duplicates from the first column.
+f. Find the correlation between first and second column and covariance between second and third column.
+g. Detect the outliers and remove the rows having outliers.
+h. Discretize second column and create 5 bins
+import pandas as pd
+import numpy as np
+df = pd.DataFrame(np.random.randint(0,100,size=(50,3)), columns=list('123'))
+df.head()
+1	2	3
+0	76	60	5
+1	3	11	20
+2	13	9	38
+3	70	92	26
+4	22	92	75
+for c in  df.sample(int(df.shape[0]*df.shape[1]*0.10)).index:
+    df.loc[c,str(np.random.randint(1,4))]=np.nan
+df
+
+# ye mat puchna kaise aya 
+# meko nhi pta bss stackoverflow zinda baad maine 
+# bss 0.10 lagaya
+1	2	3
+0	76.0	60.0	5.0
+1	3.0	11.0	20.0
+2	13.0	9.0	38.0
+3	70.0	92.0	26.0
+4	22.0	92.0	75.0
+5	51.0	44.0	59.0
+6	53.0	31.0	NaN
+7	43.0	NaN	1.0
+8	97.0	2.0	79.0
+9	NaN	0.0	6.0
+10	12.0	90.0	91.0
+11	69.0	63.0	62.0
+12	56.0	37.0	55.0
+13	79.0	28.0	0.0
+14	NaN	64.0	7.0
+15	96.0	4.0	83.0
+16	69.0	84.0	63.0
+17	28.0	29.0	11.0
+18	13.0	99.0	96.0
+19	32.0	48.0	63.0
+20	52.0	21.0	86.0
+21	95.0	4.0	16.0
+22	5.0	12.0	NaN
+23	53.0	88.0	13.0
+24	NaN	15.0	7.0
+25	87.0	84.0	80.0
+26	97.0	29.0	NaN
+27	0.0	NaN	53.0
+28	66.0	NaN	5.0
+29	21.0	85.0	70.0
+30	21.0	47.0	NaN
+31	65.0	89.0	16.0
+32	68.0	31.0	68.0
+33	27.0	11.0	67.0
+34	97.0	38.0	54.0
+35	NaN	17.0	50.0
+36	29.0	85.0	40.0
+37	29.0	54.0	56.0
+38	69.0	44.0	48.0
+39	60.0	77.0	60.0
+40	82.0	61.0	73.0
+41	96.0	73.0	59.0
+42	88.0	72.0	NaN
+43	30.0	64.0	99.0
+44	58.0	38.0	94.0
+45	52.0	64.0	NaN
+46	34.0	65.0	77.0
+47	85.0	NaN	48.0
+48	45.0	89.0	54.0
+49	74.0	NaN	55.0
+#part A
+print(df.isnull().sum().sum())
+15
+for col in df.columns:
+    print(col,df[col].isnull().sum())
+df.dropna(axis = 1,thresh=(df.shape[0]-5)).head()
+1 4
+2 5
+3 6
+1	2
+0	76.0	60.0
+1	3.0	11.0
+2	13.0	9.0
+3	70.0	92.0
+4	22.0	92.0
+sum=df.sum(axis=1)
+print("SUM IS :\n",sum)
+print("\nMAXIMUM SUM IS :",sum.max())
+max_sum_row = df.sum(axis=1).idxmax()
+print("\nRow index having maximum sum is :" ,max_sum_row)
+
+df = df.drop(max_sum_row ,axis =0)
+print("\nDATA Frame AFTER REMOVING THE ROW HAVING MAXIMUM SUM VALUE")
+df
+SUM IS :
+ 0     141.0
+1      34.0
+2      60.0
+3     188.0
+4     189.0
+5     154.0
+6      84.0
+7      44.0
+8     178.0
+9       6.0
+10    193.0
+11    194.0
+12    148.0
+13    107.0
+14     71.0
+15    183.0
+16    216.0
+17     68.0
+18    208.0
+19    143.0
+20    159.0
+21    115.0
+22     17.0
+23    154.0
+24     22.0
+25    251.0
+26    126.0
+27     53.0
+28     71.0
+29    176.0
+30     68.0
+31    170.0
+32    167.0
+33    105.0
+34    189.0
+35     67.0
+36    154.0
+37    139.0
+38    161.0
+39    197.0
+40    216.0
+41    228.0
+42    160.0
+43    193.0
+44    190.0
+45    116.0
+46    176.0
+47    133.0
+48    188.0
+49    129.0
+dtype: float64
+
+MAXIMUM SUM IS : 251.0
+
+Row index having maximum sum is : 25
+
+DATA Frame AFTER REMOVING THE ROW HAVING MAXIMUM SUM VALUE
+1	2	3
+0	76.0	60.0	5.0
+1	3.0	11.0	20.0
+2	13.0	9.0	38.0
+3	70.0	92.0	26.0
+4	22.0	92.0	75.0
+5	51.0	44.0	59.0
+6	53.0	31.0	NaN
+7	43.0	NaN	1.0
+8	97.0	2.0	79.0
+9	NaN	0.0	6.0
+10	12.0	90.0	91.0
+11	69.0	63.0	62.0
+12	56.0	37.0	55.0
+13	79.0	28.0	0.0
+14	NaN	64.0	7.0
+15	96.0	4.0	83.0
+16	69.0	84.0	63.0
+17	28.0	29.0	11.0
+18	13.0	99.0	96.0
+19	32.0	48.0	63.0
+20	52.0	21.0	86.0
+21	95.0	4.0	16.0
+22	5.0	12.0	NaN
+23	53.0	88.0	13.0
+24	NaN	15.0	7.0
+26	97.0	29.0	NaN
+27	0.0	NaN	53.0
+28	66.0	NaN	5.0
+29	21.0	85.0	70.0
+30	21.0	47.0	NaN
+31	65.0	89.0	16.0
+32	68.0	31.0	68.0
+33	27.0	11.0	67.0
+34	97.0	38.0	54.0
+35	NaN	17.0	50.0
+36	29.0	85.0	40.0
+37	29.0	54.0	56.0
+38	69.0	44.0	48.0
+39	60.0	77.0	60.0
+40	82.0	61.0	73.0
+41	96.0	73.0	59.0
+42	88.0	72.0	NaN
+43	30.0	64.0	99.0
+44	58.0	38.0	94.0
+45	52.0	64.0	NaN
+46	34.0	65.0	77.0
+47	85.0	NaN	48.0
+48	45.0	89.0	54.0
+49	74.0	NaN	55.0
+#part D
+sortdf=df.sort_values('1')
+sortdf.head()
+1	2	3
+27	0.0	NaN	53.0
+1	3.0	11.0	20.0
+22	5.0	12.0	NaN
+10	12.0	90.0	91.0
+18	13.0	99.0	96.0
+# PART E
+df =df.drop_duplicates(subset='1',keep = "first")
+print(df)
+       1     2     3
+0   76.0  60.0   5.0
+1    3.0  11.0  20.0
+2   13.0   9.0  38.0
+3   70.0  92.0  26.0
+4   22.0  92.0  75.0
+5   51.0  44.0  59.0
+6   53.0  31.0   NaN
+7   43.0   NaN   1.0
+8   97.0   2.0  79.0
+9    NaN   0.0   6.0
+10  12.0  90.0  91.0
+11  69.0  63.0  62.0
+12  56.0  37.0  55.0
+13  79.0  28.0   0.0
+15  96.0   4.0  83.0
+17  28.0  29.0  11.0
+19  32.0  48.0  63.0
+20  52.0  21.0  86.0
+21  95.0   4.0  16.0
+22   5.0  12.0   NaN
+27   0.0   NaN  53.0
+28  66.0   NaN   5.0
+29  21.0  85.0  70.0
+31  65.0  89.0  16.0
+32  68.0  31.0  68.0
+33  27.0  11.0  67.0
+36  29.0  85.0  40.0
+39  60.0  77.0  60.0
+40  82.0  61.0  73.0
+42  88.0  72.0   NaN
+43  30.0  64.0  99.0
+44  58.0  38.0  94.0
+46  34.0  65.0  77.0
+47  85.0   NaN  48.0
+48  45.0  89.0  54.0
+49  74.0   NaN  55.0
+#part F
+correlation = df['1'].corr(df['2'])
+print("CORRELATION between column 1 and 2 : ", correlation)
+covariance = df['2'].cov(df['3'])
+print("COVARIANCE between column 2 and 3 :",covariance)
+CORRELATION between column 1 and 2 :  -0.11821167884413103
+COVARIANCE between column 2 and 3 : 152.99338624338625
+#part G
+df.plot.box()
+
+#part H
+df1 =  pd.cut(df['2'],bins=5).head()
+df1
+0      (55.2, 73.6]
+1    (-0.092, 18.4]
+2    (-0.092, 18.4]
+3      (73.6, 92.0]
+4      (73.6, 92.0]
+Name: 2, dtype: category
+Categories (5, interval[float64, right]): [(-0.092, 18.4] < (18.4, 36.8] < (36.8, 55.2] < (55.2, 73.6] < (73.6, 92.0]]
+
+
+
+
+*****************************************************
+
+
+4. practical 4
+
+Question
+Q- Consider two excel files having attendance of a workshop’s participants for two days. Each file has three fields ‘Name’, ‘Time of joining’, duration (in minutes) where names are unique within a file. Note that duration may take one of three values (30, 40, 50) only. Import the data into two dataframes and do the following:
+
+a.Perform merging of the two dataframes to find the names of students who had attended the workshop on both days.
+b. Find names of all students who have attended workshop on either of the days.
+c. Merge two data frames row-wise and find the total number of records in the data frame.
+d. Merge two data frames and use two columns names and duration as multi-row indexes. Generate descriptive statistics for this multi-index.
+#first we are importing the essential libraries
+
+import numpy as np
+import pandas as pd
+#taking the data from excel files
+
+dfDay1 = pd.read_excel('Day1_himanshu.xlsx')
+dfDay2 = pd.read_excel('Day2_himanshu.xlsx')
+print(dfDay1.head(),"\n")
+print(dfDay2.head())
+        Name Time of Joining  Duration
+0  Abhimanyu        11:00:00        40
+1   Abhishek        11:04:00        30
+2      Aasif        11:08:00        30
+3       Aman        11:01:00        40
+4      Anand        11:12:00        50 
+
+        Name Time of Joining  Duration
+0  Abhimanyu        11:00:00        40
+1   Abhishek        11:06:00        30
+2  Deepanshu        11:10:00        40
+3       Aman        11:09:00        40
+4    Anubhav        11:10:00        50
+PART A
+# Perform merging of the two dataframes to find the names of students who had attended the workshop on both days.
+
+pd.merge(dfDay1,dfDay2,how='inner',on='Name')
+Name	Time of Joining_x	Duration_x	Time of Joining_y	Duration_y
+0	Abhimanyu	11:00:00	40	11:00:00	40
+1	Abhishek	11:04:00	30	11:06:00	30
+2	Aman	11:01:00	40	11:09:00	40
+3	Anubhav	11:10:00	30	11:10:00	50
+4	Anurag	11:11:00	30	11:08:00	30
+5	Arpit	11:07:00	40	11:08:00	40
+6	Bhavana	11:15:00	30	11:14:00	30
+7	Deepanshu	11:02:00	40	11:10:00	40
+8	Ishant	11:03:00	30	11:00:00	30
+9	Harshit	11:13:00	40	11:09:00	40
+PART B
+#Find names of all students who have attended workshop on either of the days.
+
+either_day = pd.merge(dfDay1,dfDay2,how='outer',on='Name')
+either_day
+Name	Time of Joining_x	Duration_x	Time of Joining_y	Duration_y
+0	Abhimanyu	11:00:00	40.0	11:00:00	40.0
+1	Abhishek	11:04:00	30.0	11:06:00	30.0
+2	Aasif	11:08:00	30.0	NaN	NaN
+3	Aman	11:01:00	40.0	11:09:00	40.0
+4	Anand	11:12:00	50.0	NaN	NaN
+5	Anubhav	11:10:00	30.0	11:10:00	50.0
+6	Anurag	11:11:00	30.0	11:08:00	30.0
+7	Arpit	11:07:00	40.0	11:08:00	40.0
+8	Akanksha	11:08:00	50.0	NaN	NaN
+9	Bhavana	11:15:00	30.0	11:14:00	30.0
+10	Deepanshu	11:02:00	40.0	11:10:00	40.0
+11	Ishant	11:03:00	30.0	11:00:00	30.0
+12	Gourav	11:19:00	30.0	NaN	NaN
+13	Harshit	11:13:00	40.0	11:09:00	40.0
+14	Kartikey	11:05:00	50.0	NaN	NaN
+15	Bharat	NaN	NaN	11:12:00	30.0
+16	Divyanshu	NaN	NaN	11:13:00	40.0
+17	Deepak	NaN	NaN	11:02:00	50.0
+18	Jayesh	NaN	NaN	11:08:00	30.0
+19	Jeeva	NaN	NaN	11:06:00	30.0
+PART C
+#Merge two data frames row-wise and find the total number of records in the data frame.
+#using the either day from part b
+
+either_day['Name'].count() 
+20
+PART D
+# Merge two data frames and use two columns names and duration as multi-row indexes. 
+#Generate descriptive statistics for this multi-index
+
+both_days = pd.merge(dfDay1,dfDay2,how='outer',on=['Name','Duration']).copy() #  creates a copy of an existing list
+
+both_days.fillna(value='-',inplace=True) # to fill out the missing values in the given series object
+
+both_days.set_index(['Name','Duration']) # a method to set a List as index of a Data Frame
+Time of Joining_x	Time of Joining_y
+Name	Duration		
+Abhimanyu	40	11:00:00	11:00:00
+Abhishek	30	11:04:00	11:06:00
+Aasif	30	11:08:00	-
+Aman	40	11:01:00	11:09:00
+Anand	50	11:12:00	-
+Anubhav	30	11:10:00	-
+Anurag	30	11:11:00	11:08:00
+Arpit	40	11:07:00	11:08:00
+Akanksha	50	11:08:00	-
+Bhavana	30	11:15:00	11:14:00
+Deepanshu	40	11:02:00	11:10:00
+Ishant	30	11:03:00	11:00:00
+Gourav	30	11:19:00	-
+Harshit	40	11:13:00	11:09:00
+Kartikey	50	11:05:00	-
+Anubhav	50	-	11:10:00
+Bharat	30	-	11:12:00
+Divyanshu	40	-	11:13:00
+Deepak	50	-	11:02:00
+Jayesh	30	-	11:08:00
+Jeeva	30	-	11:06:00
+
+
+
+***********************************************
+
+
+5. practical 5
+
+Taking Iris data, plot the following with proper legend and axis labels: (Download IRIS data from: https://archive.ics.uci.edu/ml/datasets/iris or import it from sklearn.datasets)
+
+a. Plot bar chart to show the frequency of each class label in the data.
+b. Draw a scatter plot for Petal width vs sepal width.
+c. Plot density distribution for feature petal length.
+d. Use a pair plot to show pairwise bivariate distribution in the Iris Dataset.
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+iris = sns.load_dataset('iris')
+#part A
+sns.countplot(x='species',data=iris,palette='Set2')
+plt.xlabel('Species')
+plt.ylabel('Frequency')
+plt.title('Frequency of Each class label')
+Text(0.5, 1.0, 'Frequency of Each class label')
+
+#part B
+plt.scatter(x='petal_width',y='sepal_width',data=iris)
+plt.xlabel('Petal Width')
+plt.ylabel('Sepal Width')
+plt.title("Scatter plot Petel width vs Sepal Width")
+Text(0.5, 1.0, 'Scatter plot Petel width vs Sepal Width')
+
+#part C
+sns.histplot(iris['petal_length'],kde=False,bins=30)
+
+sns.pairplot(iris,hue='species',palette='coolwarm')
